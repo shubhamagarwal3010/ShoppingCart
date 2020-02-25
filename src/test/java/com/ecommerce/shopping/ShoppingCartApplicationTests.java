@@ -39,8 +39,8 @@ class ShoppingCartApplicationTests {
         } catch (ProductNotFoundException e) {
             assertNull(e);
         }
-        double totalCost = ArithmeticRounding.round(cartManagementService.getTotalCost(), 2);
-        assertEquals(totalCost, 199.95, "Total cost of 5 Dove Soaps each with a unit price of 39.99");
+        double totalCost = ArithmeticRounding.round(cartManagementService.getProductsCost(), 2);
+        assertEquals(199.95, totalCost, "Total cost of 5 Dove Soaps each with a unit price of 39.99");
     }
 
     @Test
@@ -56,7 +56,30 @@ class ShoppingCartApplicationTests {
         } catch (ProductNotFoundException e) {
             assertNull(e);
         }
+        double totalCost = ArithmeticRounding.round(cartManagementService.getProductsCost(), 2);
+        assertEquals(319.92, totalCost, "Total cost of 8 Dove Soaps each with a unit price of 39.99");
+    }
+
+    @Test
+    void testShoppingCartTotalCostAndTotalSalesTaxWhenMultipleTypesOfItemsAreAdded() {
+        try {
+            productService.setSalesTaxRate(12.5);
+            productService.addProduct(new Product(ItemName.DOVE, 39.99));
+            productService.addProduct(new Product(ItemName.AXE_DEO, 99.99));
+        } catch (ProductAlreadyExists e) {
+            assertNull(e);
+        }
+        try {
+            cartManagementService.addItem(ItemName.DOVE, 2);
+            cartManagementService.addItem(ItemName.AXE_DEO, 2);
+        } catch (ProductNotFoundException e) {
+            assertNull(e);
+        }
+
+        double totalSalesTax = ArithmeticRounding.round(cartManagementService.getTotalSalesTaxAmount(), 2);
+        assertEquals(35, totalSalesTax, "Total sales tax");
+
         double totalCost = ArithmeticRounding.round(cartManagementService.getTotalCost(), 2);
-        assertEquals(totalCost, 319.92, "Total cost of 8 Dove Soaps each with a unit price of 39.99");
+        assertEquals(totalSalesTax, 314.96, totalCost, "Total cost of 2 Dove Soaps and 2 Axe Deo including sales tax");
     }
 }

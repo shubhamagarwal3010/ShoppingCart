@@ -11,6 +11,8 @@ public class ProductService implements IProductService {
 
     private final List<Product> products = new ArrayList<>();
 
+    private double salesTaxRate;
+
     @Override
     public void addProduct(Product product) throws ProductAlreadyExists {
         if (products.stream().noneMatch(p -> p.equals(product))) {
@@ -36,5 +38,15 @@ public class ProductService implements IProductService {
             return product.get().getUnitPrice();
         }
         throw new ProductNotFoundException();
+    }
+
+    @Override
+    public double getSalesTaxRate() {
+        return salesTaxRate;
+    }
+
+    @Override
+    public void setSalesTaxRate(double salesTaxRate) {
+        this.salesTaxRate = salesTaxRate;
     }
 }

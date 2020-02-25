@@ -22,7 +22,7 @@ public class ShoppingCartApplication {
         } catch (ProductAlreadyExists | ProductNotFoundException e) {
             e.printStackTrace();
         }
-        double totalCost = ArithmeticRounding.round(cartManagementService.getTotalCost(), 2);
+        double totalCost = ArithmeticRounding.round(cartManagementService.getProductsCost(), 2);
 
         System.out.println("Total Cost: " + totalCost);
     }

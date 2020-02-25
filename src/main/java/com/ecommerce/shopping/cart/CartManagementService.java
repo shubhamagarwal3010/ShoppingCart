@@ -21,7 +21,15 @@ public class CartManagementService {
         cartItems.put(product, cartItems.getOrDefault(product, 0) + quantity);
     }
 
-    public double getTotalCost() {
+    public double getProductsCost() {
         return cartItems.keySet().stream().mapToDouble(p -> p.getUnitPrice() * cartItems.get(p)).sum();
+    }
+
+    public double getTotalSalesTaxAmount() {
+        return (getProductsCost() * productService.getSalesTaxRate()) / 100;
+    }
+
+    public double getTotalCost() {
+        return getProductsCost() + getTotalSalesTaxAmount();
     }
 }

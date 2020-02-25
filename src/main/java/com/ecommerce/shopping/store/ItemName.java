@@ -1,7 +1,8 @@
 package com.ecommerce.shopping.store;
 
 public enum ItemName {
-    DOVE("Dove");
+    DOVE("Dove"),
+    AXE_DEO("Axe Deo");
 
     private String itemName;
 

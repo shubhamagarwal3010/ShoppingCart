@@ -1,11 +1,13 @@
 package com.ecommerce.shopping.utils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class ArithmeticRounding {
 
-    public static double round(double value, int places) {
+    public static double round(Double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
-        long factor = (long) Math.pow(10, places);
-        return (double) Math.round(value * factor) / factor;
+        return new BigDecimal(value.toString()).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 }

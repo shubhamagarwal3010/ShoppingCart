@@ -10,5 +10,6 @@ class ArithmeticRoundingTests {
     void testArithmeticRounding() {
         assertEquals(0.57, ArithmeticRounding.round(0.567, 2));
         assertEquals(0.56, ArithmeticRounding.round(0.564, 2));
+        assertEquals(0.57, ArithmeticRounding.round(0.565, 2));
     }
 }
