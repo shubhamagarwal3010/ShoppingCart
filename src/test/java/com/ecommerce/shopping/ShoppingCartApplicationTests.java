@@ -42,4 +42,21 @@ class ShoppingCartApplicationTests {
         double totalCost = ArithmeticRounding.round(cartManagementService.getTotalCost(), 2);
         assertEquals(totalCost, 199.95, "Total cost of 5 Dove Soaps each with a unit price of 39.99");
     }
+
+    @Test
+    void testShoppingCartTotalCostWhenAProductIsAddedTwice() {
+        try {
+            productService.addProduct(new Product(ItemName.DOVE, 39.99));
+        } catch (ProductAlreadyExists e) {
+            assertNull(e);
+        }
+        try {
+            cartManagementService.addItem(ItemName.DOVE, 5);
+            cartManagementService.addItem(ItemName.DOVE, 3);
+        } catch (ProductNotFoundException e) {
+            assertNull(e);
+        }
+        double totalCost = ArithmeticRounding.round(cartManagementService.getTotalCost(), 2);
+        assertEquals(totalCost, 319.92, "Total cost of 8 Dove Soaps each with a unit price of 39.99");
+    }
 }
