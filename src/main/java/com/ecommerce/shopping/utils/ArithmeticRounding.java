@@ -8,6 +8,6 @@ public class ArithmeticRounding {
     public static double round(Double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
-        return new BigDecimal(value.toString()).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        return new BigDecimal(value.toString()).setScale(places, RoundingMode.HALF_UP).doubleValue();
     }
 }

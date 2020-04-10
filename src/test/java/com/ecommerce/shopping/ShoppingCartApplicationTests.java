@@ -1,6 +1,8 @@
 package com.ecommerce.shopping;
 
 import com.ecommerce.shopping.cart.CartManagementService;
+import com.ecommerce.shopping.offer.BuyTwoGetOffer;
+import com.ecommerce.shopping.offer.OfferService;
 import com.ecommerce.shopping.store.*;
 import com.ecommerce.shopping.utils.ArithmeticRounding;
 import org.junit.jupiter.api.Test;
@@ -27,11 +29,14 @@ class ShoppingCartApplicationTests {
     @Autowired
     private CartManagementService cartManagementService;
 
+    @Autowired
+    private OfferService offerService;
+
     @Test
     void testShoppingCartTotalCostForGivenQuantity() {
         try {
             productService.addProduct(new Product(ItemName.DOVE, 39.99));
-        } catch (ProductAlreadyExists e) {
+        } catch (ProductAlreadyExistsException e) {
             assertNull(e);
         }
         try {
@@ -47,7 +52,7 @@ class ShoppingCartApplicationTests {
     void testShoppingCartTotalCostWhenAProductIsAddedTwice() {
         try {
             productService.addProduct(new Product(ItemName.DOVE, 39.99));
-        } catch (ProductAlreadyExists e) {
+        } catch (ProductAlreadyExistsException e) {
             assertNull(e);
         }
         try {
@@ -66,7 +71,7 @@ class ShoppingCartApplicationTests {
             productService.setSalesTaxRate(12.5);
             productService.addProduct(new Product(ItemName.DOVE, 39.99));
             productService.addProduct(new Product(ItemName.AXE_DEO, 99.99));
-        } catch (ProductAlreadyExists e) {
+        } catch (ProductAlreadyExistsException e) {
             assertNull(e);
         }
         try {
@@ -81,5 +86,20 @@ class ShoppingCartApplicationTests {
 
         double totalCost = ArithmeticRounding.round(cartManagementService.getTotalCost(), 2);
         assertEquals(totalSalesTax, 314.96, totalCost, "Total cost of 2 Dove Soaps and 2 Axe Deo including sales tax");
+    }
+
+    @Test
+    void testShoppingCartTotalCostWhenProductsHaveBuy2Get1FreeOffer() {
+            productService.setSalesTaxRate(12.5);
+            productService.addProduct(new Product(ItemName.DOVE, 39.99));
+            offerService.setOffer(new Product(ItemName.DOVE, 39.99), new BuyTwoGetOffer());
+
+            cartManagementService.addItem(ItemName.DOVE, 3);
+
+        double totalSalesTax = ArithmeticRounding.round(cartManagementService.getTotalSalesTaxAmount(), 2);
+        assertEquals(10, totalSalesTax, "Total sales tax");
+
+        double totalCost = ArithmeticRounding.round(cartManagementService.getTotalCost(), 2);
+        assertEquals(totalSalesTax, 89.98, totalCost, "Total cost of 3 Dove Soaps with buy 2 get 1 free offer including sales tax");
     }
 }

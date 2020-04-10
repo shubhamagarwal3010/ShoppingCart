@@ -19,7 +19,7 @@ public class ShoppingCartApplication {
         try {
             productService.addProduct(new Product(ItemName.DOVE, 39.99));
             cartManagementService.addItem(ItemName.DOVE, 5);
-        } catch (ProductAlreadyExists | ProductNotFoundException e) {
+        } catch (ProductAlreadyExistsException | ProductNotFoundException e) {
             e.printStackTrace();
         }
         double totalCost = ArithmeticRounding.round(cartManagementService.getProductsCost(), 2);

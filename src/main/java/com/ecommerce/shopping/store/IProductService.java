@@ -1,11 +1,11 @@
 package com.ecommerce.shopping.store;
 
 public interface IProductService {
-    public void addProduct(Product product) throws ProductAlreadyExists;
+    void addProduct(Product product) throws ProductAlreadyExistsException;
 
     Product getProduct(String productName) throws ProductNotFoundException;
 
-    public double getProductPrice(String productName) throws ProductNotFoundException;
+    double getProductPrice(String productName) throws ProductNotFoundException;
 
     double getSalesTaxRate();
 

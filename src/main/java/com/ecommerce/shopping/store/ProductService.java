@@ -14,12 +14,12 @@ public class ProductService implements IProductService {
     private double salesTaxRate;
 
     @Override
-    public void addProduct(Product product) throws ProductAlreadyExists {
+    public void addProduct(Product product) throws ProductAlreadyExistsException {
         if (products.stream().noneMatch(p -> p.equals(product))) {
             products.add(product);
             return;
         }
-        throw new ProductAlreadyExists();
+        throw new ProductAlreadyExistsException();
     }
 
     @Override

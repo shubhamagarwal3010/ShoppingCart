@@ -1,4 +1,4 @@
 package com.ecommerce.shopping.store;
 
-public class ProductNotFoundException extends Exception {
+public class ProductNotFoundException extends RuntimeException {
 }

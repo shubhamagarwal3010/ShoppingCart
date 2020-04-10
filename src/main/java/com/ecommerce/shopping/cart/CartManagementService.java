@@ -1,5 +1,6 @@
 package com.ecommerce.shopping.cart;
 
+import com.ecommerce.shopping.offer.OfferService;
 import com.ecommerce.shopping.store.IProductService;
 import com.ecommerce.shopping.store.ItemName;
 import com.ecommerce.shopping.store.Product;
@@ -14,6 +15,9 @@ public class CartManagementService {
 
     @Autowired
     private IProductService productService;
+    @Autowired
+    private OfferService offerService;
+
     private HashMap<Product, Integer> cartItems = new HashMap<>();
 
     public void addItem(ItemName productName, int quantity) throws ProductNotFoundException {
@@ -22,7 +26,10 @@ public class CartManagementService {
     }
 
     public double getProductsCost() {
-        return cartItems.keySet().stream().mapToDouble(p -> p.getUnitPrice() * cartItems.get(p)).sum();
+        double sumOfAllProductsWithoutOffer = cartItems.keySet().stream().mapToDouble(p -> p.getUnitPrice() * cartItems.get(p)).sum();
+
+        double totalOffer = offerService.getTotalOfferCostOnProducts(cartItems);
+        return sumOfAllProductsWithoutOffer - totalOffer;
     }
 
     public double getTotalSalesTaxAmount() {

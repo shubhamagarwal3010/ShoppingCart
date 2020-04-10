@@ -22,7 +22,7 @@ class ProductServiceTests {
     void testAddProduct() {
         try {
             productService.addProduct(new Product(ItemName.DOVE, 39.99));
-        } catch (ProductAlreadyExists e) {
+        } catch (ProductAlreadyExistsException e) {
             assertNull(e);
         }
         try {
@@ -38,7 +38,7 @@ class ProductServiceTests {
         try {
             productService.addProduct(new Product(ItemName.DOVE, 39.99));
             productService.addProduct(new Product(ItemName.DOVE, 99.99));
-        } catch (ProductAlreadyExists e) {
+        } catch (ProductAlreadyExistsException e) {
             assertNotNull(e);
         }
     }

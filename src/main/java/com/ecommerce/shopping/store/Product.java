@@ -6,10 +6,21 @@ public class Product implements Cloneable {
 
     private final String productName;
     private final double unitPrice;
+    private boolean isEligibleForOffer = false;
+
+    public Product(final ItemName productName, final double unitPrice, boolean isEligibleForOffer) {
+        this.productName = productName.getItemName();
+        this.unitPrice = unitPrice;
+        this.isEligibleForOffer = isEligibleForOffer;
+    }
 
     public Product(final ItemName productName, final double unitPrice) {
         this.productName = productName.getItemName();
         this.unitPrice = unitPrice;
+    }
+
+    public boolean isEligibleForOffer() {
+        return isEligibleForOffer;
     }
 
     public String getProductName() {
@@ -34,6 +45,6 @@ public class Product implements Cloneable {
     }
 
     public Product clone() {
-        return new Product(ItemName.getItem(this.productName), this.unitPrice);
+        return new Product(ItemName.getItem(this.productName), this.unitPrice, this.isEligibleForOffer);
     }
 }
